@@ -5,18 +5,34 @@ import ContactMethods from './components/ContactMethods';
 import SupportForm from './components/SupportForm';
 import KnowledgeBase from './components/KnowledgeBase';
 import CommunitySupport from './components/CommunitySupport';
+import Button from '../../components/ui/Button';
 
 const ContactSupport = () => {
+  const handleNavigation = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <main className="pt-16">
         <ContactHero />
-        <ContactMethods />
-        <SupportForm />
-        <KnowledgeBase />
-        <CommunitySupport />
+        <div id="contact-methods">
+          <ContactMethods />
+        </div>
+        <div id="support-form">
+          <SupportForm />
+        </div>
+        <div id="knowledge-base">
+          <KnowledgeBase />
+        </div>
+        <div id="community-support">
+          <CommunitySupport />
+        </div>
       </main>
 
       {/* Footer */}
@@ -54,28 +70,40 @@ const ContactSupport = () => {
                 Transforming traditional farming into data-driven agriculture with intelligent insights and community support.
               </p>
             </div>
-            
+
             <div>
               <h3 className="font-semibold text-card-foreground mb-4">Support</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>Help Center</li>
-                <li>Community Forum</li>
-                <li>Contact Us</li>
-                <li>System Status</li>
+                <li><button onClick={() => handleNavigation('support-form')}>Help Center</button></li>
+                <li><button onClick={() => handleNavigation('community-support')}>Community Forum</button></li>
+                <li><button onClick={() => handleNavigation('contact-methods')}>Contact Us</button></li>
+                <li><a href="#">System Status</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold text-card-foreground mb-4">Resources</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>Knowledge Base</li>
-                <li>API Documentation</li>
-                <li>Training Videos</li>
-                <li>Best Practices</li>
+                <li><button onClick={() => handleNavigation('knowledge-base')}>Knowledge Base</button></li>
+                <li>
+                  <a href="https://farmer.gov.in/imagedefault/askexpert.pdf" target="_blank" rel="noopener noreferrer">
+                    API Documentation
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.youtube.com/playlist?list=PLhaUj2uVrjuxrUPOcEqmLfBGCLnOixQgJ" target="_blank" rel="noopener noreferrer">
+                    Training Videos
+                  </a>
+                </li>
+                <li>
+                  <a href="https://farmer.gov.in/bestpractices.aspx" target="_blank" rel="noopener noreferrer">
+                    Best Practices
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} FarmSync. All rights reserved.

@@ -6,6 +6,7 @@ import Input from '../../../components/ui/Input';
 const KnowledgeBase = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [showAll, setShowAll] = useState(false);
 
   const categories = [
     { id: 'all', name: 'All Topics', icon: 'Grid3X3', count: 156 },
@@ -25,7 +26,8 @@ const KnowledgeBase = () => {
       readTime: '5 min read',
       views: 2847,
       description: 'Step-by-step guide to creating and configuring your first crop profile in FarmSync.',
-      tags: ['setup', 'crops', 'beginner']
+      tags: ['setup', 'crops', 'beginner'],
+      content: 'This is the full content for Setting Up Your First Crop Profile...'
     },
     {
       id: 2,
@@ -34,7 +36,8 @@ const KnowledgeBase = () => {
       readTime: '8 min read',
       views: 2156,
       description: 'Learn how to interpret your profit analytics and make data-driven farming decisions.',
-      tags: ['analytics', 'profit', 'dashboard']
+      tags: ['analytics', 'profit', 'dashboard'],
+      content: 'This is the full content for Understanding Profit Analytics Dashboard...'
     },
     {
       id: 3,
@@ -43,34 +46,8 @@ const KnowledgeBase = () => {
       readTime: '6 min read',
       views: 1923,
       description: 'Maximize efficiency when collecting field data using the FarmSync mobile app.',
-      tags: ['mobile', 'data-collection', 'field-work']
-    },
-    {
-      id: 4,
-      title: 'Seasonal Expense Tracking Strategies',
-      category: 'financial-tracking',
-      readTime: '7 min read',
-      views: 1745,
-      description: 'Organize your farm expenses by season for better financial planning and tax preparation.',
-      tags: ['expenses', 'seasonal', 'planning']
-    },
-    {
-      id: 5,
-      title: 'Troubleshooting Sync Issues',
-      category: 'troubleshooting',
-      readTime: '4 min read',
-      views: 1432,
-      description: 'Common solutions for data synchronization problems between devices.',
-      tags: ['sync', 'troubleshooting', 'technical']
-    },
-    {
-      id: 6,
-      title: 'Advanced Crop Rotation Planning',
-      category: 'crop-management',
-      readTime: '12 min read',
-      views: 1289,
-      description: 'Plan multi-year crop rotations using FarmSync\'s advanced planning tools.',
-      tags: ['rotation', 'planning', 'advanced']
+      tags: ['mobile', 'data-collection', 'field-work'],
+      content: 'This is the full content for Mobile Field Data Collection Best Practices...'
     }
   ];
 
@@ -80,9 +57,17 @@ const KnowledgeBase = () => {
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       article.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    
+
     return matchesCategory && matchesSearch;
   });
+
+  const handleCall = () => {
+    window.location.href = 'tel:+918986610724';
+  };
+
+  const handleViewAll = () => {
+    setShowAll(true);
+  };
 
   return (
     <section className="py-16 lg:py-24 bg-background">
@@ -101,12 +86,11 @@ const KnowledgeBase = () => {
           <div className="lg:col-span-1">
             <div className="bg-card rounded-xl p-6 agricultural-shadow sticky top-24">
               <h3 className="text-lg font-semibold text-card-foreground mb-4">Browse by Category</h3>
-              
               <div className="space-y-2">
                 {categories.map((category) => (
                   <button
                     key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
+                    onClick={() => { setSelectedCategory(category.id); setShowAll(false); }}
                     className={`w-full flex items-center justify-between p-3 rounded-lg text-left seasonal-transition ${
                       selectedCategory === category.id
                         ? 'bg-primary text-primary-foreground'
@@ -121,7 +105,6 @@ const KnowledgeBase = () => {
                   </button>
                 ))}
               </div>
-
               <div className="mt-8 p-4 bg-accent/5 rounded-lg border border-accent/20">
                 <div className="flex items-center space-x-2 mb-2">
                   <Icon name="Lightbulb" size={16} className="text-accent" />
@@ -136,7 +119,6 @@ const KnowledgeBase = () => {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            {/* Search Bar */}
             <div className="mb-8">
               <Input
                 type="search"
@@ -147,7 +129,6 @@ const KnowledgeBase = () => {
               />
             </div>
 
-            {/* Results Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-xl font-semibold text-foreground">
@@ -158,8 +139,7 @@ const KnowledgeBase = () => {
                   {searchQuery && ` for "${searchQuery}"`}
                 </p>
               </div>
-              
-              <Button variant="outline" size="sm" iconName="ExternalLink" iconPosition="right">
+              <Button variant="outline" size="sm" iconName="ExternalLink" iconPosition="right" onClick={handleViewAll}>
                 View All
               </Button>
             </div>
@@ -181,7 +161,6 @@ const KnowledgeBase = () => {
                         {categories.find(c => c.id === article.category)?.name}
                       </span>
                     </div>
-                    
                     <div className="flex items-center space-x-3 text-xs text-muted-foreground">
                       <div className="flex items-center space-x-1">
                         <Icon name="Clock" size={12} />
@@ -193,22 +172,23 @@ const KnowledgeBase = () => {
                       </div>
                     </div>
                   </div>
-                  
-                  <h4 className="text-lg font-semibold text-card-foreground mb-3 line-clamp-2">
+                  <h4 className="text-lg font-semibold text-card-foreground mb-3">
                     {article.title}
                   </h4>
-                  
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                    {article.description}
-                  </p>
-                  
+                  {showAll && (
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {article.content}
+                    </p>
+                  )}
+                  {!showAll && (
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                      {article.description}
+                    </p>
+                  )}
                   <div className="flex items-center justify-between">
                     <div className="flex flex-wrap gap-1">
                       {article.tags.slice(0, 2).map((tag) => (
-                        <span 
-                          key={tag}
-                          className="px-2 py-1 bg-muted rounded text-xs text-muted-foreground"
-                        >
+                        <span key={tag} className="px-2 py-1 bg-muted rounded text-xs text-muted-foreground">
                           {tag}
                         </span>
                       ))}
@@ -218,7 +198,6 @@ const KnowledgeBase = () => {
                         </span>
                       )}
                     </div>
-                    
                     <Icon name="ArrowRight" size={16} className="text-primary" />
                   </div>
                 </div>
@@ -235,7 +214,7 @@ const KnowledgeBase = () => {
                 <p className="text-muted-foreground mb-6">
                   Try adjusting your search terms or browse a different category.
                 </p>
-                <Button variant="outline" onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}>
+                <Button variant="outline" onClick={() => { setSearchQuery(''); setSelectedCategory('all'); setShowAll(false); }}>
                   Clear Filters
                 </Button>
               </div>
@@ -251,8 +230,8 @@ const KnowledgeBase = () => {
                 <Button variant="default" iconName="MessageCircle" iconPosition="left">
                   Start Live Chat
                 </Button>
-                <Button variant="outline" iconName="Phone" iconPosition="left">
-                  Schedule Call
+                <Button variant="outline" iconName="Phone" iconPosition="left" onClick={handleCall}>
+                  Call +91 8986610724
                 </Button>
               </div>
             </div>

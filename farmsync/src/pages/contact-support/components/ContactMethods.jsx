@@ -3,7 +3,7 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
 const ContactMethods = () => {
-  const [activeMethod, setActiveMethod] = useState('chat');
+  const [activeMethod, setActiveMethod] = useState('');
 
   const contactMethods = [
     {
@@ -20,7 +20,7 @@ const ContactMethods = () => {
       id: 'phone',
       name: 'Phone Support',
       icon: 'Phone',
-      availability: 'Mon-Fri 6AM-8PM EST',
+      availability: 'Mon-Fri 6AM-8PM IST',
       responseTime: 'Immediate',
       description: 'Speak directly with agricultural specialists for complex operational guidance.',
       color: 'primary',
@@ -52,8 +52,29 @@ const ContactMethods = () => {
     phone: '+91 8986610724 FARM-SYNC',
     email: 'support@farmsync.com',
     emergency: '+91 9334749028',
-    address: '1234 Agricultural Way, Farm Valley, IA 50001'
+    address: 'Plot No. 12, Hoshangabad Road, Misrod, Bhopal, Madhya Pradesh 462026, India'
   };
+
+  const handleAction = (methodId) => {
+    setActiveMethod(methodId);
+    if (methodId === 'phone') {
+      window.location.href = 'tel:+918986610724';
+    } else if (methodId === 'email') {
+      window.location.href = 'mailto:support@farmsync.com';
+    } else if (methodId === 'emergency') {
+      window.location.href = 'tel:+919334749028';
+    }
+  };
+
+  const renderChatBox = () => (
+    <div className="mt-6 p-4 border rounded bg-muted/10">
+      <p className="font-medium mb-2">Live Chat</p>
+      <div className="p-3 bg-white border rounded shadow text-sm">
+        <p><strong>Agent:</strong> Hello! How can we help you today?</p>
+        <p className="mt-2"><strong>You:</strong> I need help with tracking expenses.</p>
+      </div>
+    </div>
+  );
 
   return (
     <section className="py-16 lg:py-24 bg-background">
@@ -68,34 +89,33 @@ const ContactMethods = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Contact Methods */}
           <div className="space-y-4">
             {contactMethods.map((method) => (
               <div
                 key={method.id}
                 className={`p-6 rounded-xl border-2 cursor-pointer seasonal-transition ${
                   activeMethod === method.id
-                    ? 'border-primary bg-primary/5' :'border-border bg-card hover:border-primary/30'
+                    ? 'border-primary bg-primary/5'
+                    : 'border-border bg-card hover:border-primary/30'
                 }`}
-                onClick={() => setActiveMethod(method.id)}
+                onClick={() => handleAction(method.id)}
               >
                 <div className="flex items-start space-x-4">
                   <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
                     method.color === 'success' ? 'bg-success/10' :
                     method.color === 'primary' ? 'bg-primary/10' :
-                    method.color === 'accent'? 'bg-accent/10' : 'bg-warning/10'
+                    method.color === 'accent' ? 'bg-accent/10' : 'bg-warning/10'
                   }`}>
-                    <Icon 
-                      name={method.icon} 
-                      size={24} 
+                    <Icon
+                      name={method.icon}
+                      size={24}
                       className={
                         method.color === 'success' ? 'text-success' :
                         method.color === 'primary' ? 'text-primary' :
-                        method.color === 'accent'? 'text-accent' : 'text-warning'
+                        method.color === 'accent' ? 'text-accent' : 'text-warning'
                       }
                     />
                   </div>
-                  
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-semibold text-card-foreground">{method.name}</h3>
@@ -104,30 +124,22 @@ const ContactMethods = () => {
                         <span>{method.responseTime}</span>
                       </div>
                     </div>
-                    
                     <p className="text-sm text-muted-foreground mb-3">{method.description}</p>
-                    
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-success">{method.availability}</span>
-                      <Button 
-                        variant={activeMethod === method.id ? 'default' : 'outline'} 
-                        size="sm"
-                        iconName={method.icon}
-                        iconPosition="left"
-                      >
+                      <Button variant={activeMethod === method.id ? 'default' : 'outline'} size="sm" iconName={method.icon} iconPosition="left">
                         {method.action}
                       </Button>
                     </div>
                   </div>
                 </div>
+                {activeMethod === 'chat' && method.id === 'chat' && renderChatBox()}
               </div>
             ))}
           </div>
 
-          {/* Contact Information */}
           <div className="bg-card rounded-2xl p-8 agricultural-shadow">
             <h3 className="text-2xl font-bold text-card-foreground mb-6">Contact Information</h3>
-            
             <div className="space-y-6">
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -138,7 +150,6 @@ const ContactMethods = () => {
                   <p className="text-muted-foreground">{contactInfo.phone}</p>
                 </div>
               </div>
-              
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
                   <Icon name="Mail" size={20} className="text-accent" />
@@ -148,7 +159,6 @@ const ContactMethods = () => {
                   <p className="text-muted-foreground">{contactInfo.email}</p>
                 </div>
               </div>
-              
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center">
                   <Icon name="AlertTriangle" size={20} className="text-warning" />
@@ -158,7 +168,6 @@ const ContactMethods = () => {
                   <p className="text-muted-foreground">{contactInfo.emergency}</p>
                 </div>
               </div>
-              
               <div className="flex items-start space-x-4">
                 <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
                   <Icon name="MapPin" size={20} className="text-secondary" />
@@ -182,6 +191,7 @@ const ContactMethods = () => {
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>
